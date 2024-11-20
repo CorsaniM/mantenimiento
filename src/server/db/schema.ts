@@ -1,32 +1,15 @@
-// Example model schema from the Drizzle docs
-// https://orm.drizzle.team/docs/sql-schema-declaration
-import { Table, relations } from "drizzle-orm";
-import {
-  bigint,
-  boolean,
-  index,
-  integer,
-  json,
-  real,
-  primaryKey,
-  timestamp,
-  varchar,
-  serial,
-} from "drizzle-orm/pg-core";
-import { columnId, createdAt, pgTable, updatedAt } from "./schema/utils";
+import { sqliteTableCreator, index, int, text } from "drizzle-orm/sqlite-core";
 
-export const equipos = pgTable(
+export const createTable = sqliteTableCreator(
+  (name) => `mantenimiento_${name}`,
+);
+
+export const equipos = createTable(
   "equipos",
   {
-    id: columnId,
-    name: varchar("name", { length: 256 }),
-    qr_code: varchar("qr_code"),
-    state: varchar("state"),
-    last_work: varchar("last_work"),
-    numberId: integer("numberId"),
-    description: varchar("description"),
-    updatedAt: updatedAt,
-    createdAt: createdAt,
+    id: int("id").primaryKey().notNull(),
+    name: text("name", { length: 256 }),
+    createdAt: int("created_at"),
   },
   (example) => ({
     nameIndex: index("name_idx").on(example.name),
